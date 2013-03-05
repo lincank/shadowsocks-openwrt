@@ -49,3 +49,40 @@ Log onto OpenWrt via SSH
 
 [dev]: https://dev.openwrt.org
 [downloads]: http://downloads.openwrt.org/
+
+## Compile Shadowsocks From Scratch On OpenWrt-DreamBox
+### Build Environment
+* Setup your build environment according to openwrt.org.cn and openwrt.org.
+* Clone the source code of shadowsocks to package directory
+
+Select the following according to your router:
+
+* Target System
+* Target Profile
+
+### Dependent Package
+Make the following package to be selected in `.config` file in the source directory.
+
+* zlib
+* libopenssl
+* openssl-util
+
+Add the this line to the end of `.config`:
+
+	CONFIG_PACKAGE_shadowsocks-libev=y
+
+then issue:
+
+	make # to make it faster, use `make -j 3 V=99`
+	
+After that, 
+
+	make package/shadowsocks-openwrt/shadowsocks-libev/compile
+	
+> if something like `package not selected` comes up while compiling, just set them up in `.config` file.
+	
+you should see something like `shadowsocks-libev-xxx.ipk` in the `packages` of `bin` directory. Copy that to your router and use `opkg` to install 
+
+	opkg install shadowsocks-libev-xxx.ipk
+
+
